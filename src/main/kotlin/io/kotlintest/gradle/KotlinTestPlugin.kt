@@ -4,11 +4,15 @@ import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.tasks.testing.Test
 
 open class KotlinTestPlugin : Plugin<Project> {
   override fun apply(project: Project) {
-    val task = project.tasks.create("kotlintest", Test::class.java)
-    task.actions.add(KotlinTestAction() as Action<in Task>)
+
+    val kotlintestJvm = project.tasks.create("kotlintest-jvm")
+    kotlintestJvm.actions.add(KotlinTestAction() as Action<in Task>)
+
+    val kotlintestJs = project.tasks.create("kotlintest-js")
+    val action: Action<in Task> = KotlinTestJsAction() as Action<in Task>
+    kotlintestJs.actions.add(action)
   }
 }
